@@ -3,9 +3,7 @@
  * time  :2020-3-12
  */
 #include<stdio.h>
-#include"test.h"
-#include"Crypto.h"
-
+#include"CryptoN.h"
 #define PT_LENGTH 32
 int main(){
     testEnv();

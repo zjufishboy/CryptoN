@@ -1,3 +1,7 @@
+/**
+ * author:zjufishboy
+ * time  :2020-3-12
+ */
 #include"utils.h"
 
 /**
@@ -17,6 +21,71 @@ char *charBin2Hex(char * word, int length){
         hex[2*i+1]+=hex[2*i+1]>=10?'A'-10:'0';    
     }
     hex[2*i]='\0';
+    return hex;
+}
+/**
+ * function   :leftmove
+ * input      :number,length
+ * output     :void
+ * description:this is a tool function to left move the data.
+ */
+unsigned int leftmove(unsigned int number,int length){
+    int i=0;
+    for(i=0;i<length;i++)
+        number=(number<<1)+((number&(1<<31))>>31);
+    return number;
+}
+/**
+ * function   :Hex2Int
+ * input      :hex,length
+ * output     :int
+ * description:this is a tool function to change hex char into int.
+ */
+
+unsigned int *Hex2Int(char * hex, int length){
+    unsigned int * ints=(unsigned int*)malloc(sizeof(unsigned int)*(length/8));
+    int i=0;
+    for(i=0;i<length/8;i++){
+        ints[i]=0;
+        ints[i]+=(hex[6+i*8]-(hex[6+i*8]>='A'?'A'-10:'0'))*16*16*16*16*16*16*16;
+        ints[i]+=(hex[7+i*8]-(hex[7+i*8]>='A'?'A'-10:'0'))*16*16*16*16*16*16   ;
+        ints[i]+=(hex[4+i*8]-(hex[4+i*8]>='A'?'A'-10:'0'))*16*16*16*16*16      ;
+        ints[i]+=(hex[5+i*8]-(hex[5+i*8]>='A'?'A'-10:'0'))*16*16*16*16         ;
+        ints[i]+=(hex[2+i*8]-(hex[2+i*8]>='A'?'A'-10:'0'))*16*16*16            ;
+        ints[i]+=(hex[3+i*8]-(hex[3+i*8]>='A'?'A'-10:'0'))*16*16               ;
+        ints[i]+=(hex[0+i*8]-(hex[0+i*8]>='A'?'A'-10:'0'))*16                  ;
+        ints[i]+=(hex[1+i*8]-(hex[1+i*8]>='A'?'A'-10:'0'))                     ;
+    }
+    return ints;
+}
+/**
+ * function   :Int2Hex
+ * input      :num
+ * output     :hex
+ * description:this is a tool function to change int into hex char.
+ */
+
+char *Int2Hex(unsigned int number){
+    char*hex=(char*)malloc(sizeof(char)*8);
+    int i=7;
+    int temp;
+    char tempc;
+    for(i=7;i>=0;i--){
+        temp=number%16;
+        if(temp>=10)
+            hex[i]='A'+temp-10;
+        else
+            hex[i]='0'+temp;
+        number/=16;
+    }
+    for(i=0;i<2;i++){
+        tempc=hex[i*2];
+        hex[i*2]=hex[7-i*2-1];
+        hex[7-i*2-1]=tempc;
+        tempc=hex[i*2+1];
+        hex[i*2+1]=hex[7-i*2];
+        hex[7-i*2]=tempc;
+    }
     return hex;
 }
 
@@ -48,10 +117,19 @@ char * get64Num(long length){
     long operator=15;
     char * number=(char *)malloc(sizeof(char)*(1+64/4));
     int i=0;
+    char temp;
     for(i=0;i<16;i++){
         number[i]=getHexSingleNumber((length&(operator<<((15-i)*4)))>>((15-i)*4));
     }
-    number[i]='\0';
+    for(i=0;i<4;i++){
+        temp=number[i*2];
+        number[i*2]=number[15-i*2-1];
+        number[15-i*2-1]=temp;
+        temp=number[i*2+1];
+        number[i*2+1]=number[15-i*2];
+        number[15-i*2]=temp;
+    }
+    number[16]='\0';
     return number;
 }
 
@@ -96,4 +174,18 @@ int len(char *stringStart){
         stringStart++;
     }
     return i;
+}
+void testEnvBigEnd(int *isBigEnd)
+{
+    int a = 0x12345678;//十六进制值为0x12345678
+    char *p = (char*)&a;//强转地址，使得指针p仅可以解引用到一个字节大小的值
+    if(*p == 0x78)
+    {
+        *isBigEnd=0;
+    }
+    else
+    {
+        *isBigEnd=1;
+    }
+    return;
 }
