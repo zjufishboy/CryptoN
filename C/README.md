@@ -2,7 +2,7 @@
 
 the code in this folder was written by zjufishboy.
 
-[Chinese version](./README_ZH.md)
+[中文版](./README_ZH.md)
 
 ## the code
 

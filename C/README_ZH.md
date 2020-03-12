@@ -2,7 +2,7 @@
 
 这个文件夹里的所有代码都是游鱼星敲的。
 
-[英文版](./README.md)
+[English version]](./README.md)
 
 ## 代码介绍
 
