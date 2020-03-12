@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "crypto.h": "c",
-        "md5.h": "c",
-        "utils.h": "c"
-    }
-}
